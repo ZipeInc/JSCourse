@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
         cartOpenBtn = document.querySelector('#cart'),
         goodsBtn = document.querySelectorAll('.goods__btn'),
         products = document.querySelectorAll('.goods__item'),
-        cartConfirm = document.querySelector('.cart__confirm'),
+        cartConfirm = document.querySelector('.confirm'),
         badge = document.querySelector('.nav__badge'),
         totalCost = document.querySelector('.cart__total > span'),
         titles = document.querySelectorAll('.goods__title');
@@ -39,9 +39,79 @@ window.addEventListener('DOMContentLoaded', () => {
 
             cartWrapper.appendChild(item);
 
-            if (empty) {
-                empty.remove();
+            if (empty.style.display = 'block') {
+                empty.style.display = 'none';
             }
+
+            showConfirm();
+            calcGoods(0);
+            calcTotal();
+            removeFromCart()
         });
     })
+
+    
+    function sliceTitle() {
+        titles.forEach(function(item) {
+            if (item.textContent.length < 70) {
+                return;
+            } else {
+                const str = `${item.textContent.slice(0, 71)}...`;
+                item.textContent = str;
+            }
+        });
+    }
+
+    sliceTitle();
+
+    function showConfirm() {
+        cartConfirm.style.display = 'block';
+        let counter = 100;
+        const id = setInterval(frame, 10);
+
+        function frame() {
+            if (counter == 10) { 
+                clearInterval(id);
+                cartConfirm.style.display = 'none';
+            } else {
+                counter--;
+
+                cartConfirm.style.transform = `translateY(-${counter}px)`;
+                cartConfirm.style.opacity = `.${counter}`;
+            }
+        }
+    }
+
+    function calcGoods(i) {
+        const items = cartWrapper.querySelectorAll('.goods__item');
+        badge.textContent = i + items.length;
+    }
+
+    function calcTotal() {
+        const prices = cartWrapper.querySelectorAll('.goods__item > .goods__price > span');
+        let total = 0;
+
+        prices.forEach(function(item) {
+            total += +item.textContent;
+        });
+        
+        totalCost.textContent = total;
+    }
+
+    function removeFromCart() {
+        const removeBtn = cartWrapper.querySelectorAll('.goods__item-remove');
+        removeBtn.forEach(function(btn) {
+            btn.addEventListener('click', () => {
+                const items = cartWrapper.querySelectorAll('.goods__item');
+                btn.parentElement.remove();
+
+                calcGoods();
+                calcTotal();
+
+                if (items.length == 0) {
+                    cartWrapper.querySelector('.empty').style.display = 'block';
+                }
+            });
+        });
+    }
 });
