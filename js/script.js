@@ -102,13 +102,12 @@ window.addEventListener('DOMContentLoaded', () => {
         const removeBtn = cartWrapper.querySelectorAll('.goods__item-remove');
         removeBtn.forEach(function(btn) {
             btn.addEventListener('click', () => {
-                const items = cartWrapper.querySelectorAll('.goods__item');
                 btn.parentElement.remove();
 
                 calcGoods();
                 calcTotal();
 
-                if (items.length == 0) {
+                if (cartWrapper.querySelectorAll('.goods__item').length == 0) {
                     cartWrapper.querySelector('.empty').style.display = 'block';
                 }
             });
