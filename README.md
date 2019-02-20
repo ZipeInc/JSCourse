@@ -1,1 +1,1 @@
-First commit - first homework.
+This is the project created while JS Quick Course. (18.02.19 - 20.02.19)
